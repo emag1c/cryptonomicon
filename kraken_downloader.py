@@ -37,7 +37,7 @@ def get_kraken_ohlc(start: datetime, end: datetime, pair: str, since, p: int = 6
         for results in body["results"].values():
             for v in results:
                 date = datetime.fromtimestamp(v[2])
-                price =
+                # todo: load results into chart
 
 
 if __name__ == '__main__':

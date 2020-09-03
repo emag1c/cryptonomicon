@@ -13,7 +13,7 @@ import math
 NANOSECOND = 1
 MICROSECOND = NANOSECOND * 1000
 MILLISECOND = MICROSECOND * 1000
-SECOND = MICROSECOND * 1000
+SECOND = MILLISECOND * 1000
 MINUTE = SECOND * 60
 HOUR = MINUTE * 60
 DAY = HOUR * 24
@@ -36,7 +36,7 @@ class datetime(_datetime):
         return self.timestamp() * SECOND
 
     @staticmethod
-    def from_ns(nanoseconds: int) -> datetime:
+    def from_ns(nanoseconds) -> datetime:
         return datetime.fromtimestamp(nanoseconds / SECOND)
 
     @staticmethod

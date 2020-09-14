@@ -1,12 +1,12 @@
-from typing import Dict, Any, Union
+from typing import Dict, Union
 from collections import OrderedDict
 from candle import CandleExtended
-from datenano import datetime, time_as_nano
+from datenano import datetime
 import pandas as pd
 
 
 class Chart:
-    def __init__(self, data=None, period: int=None):
+    def __init__(self, data=None, period: int = None):
         self.period = period
         if data is not None:
             self.__data = data
@@ -38,4 +38,3 @@ class Chart:
             self.__data[start_time] = CandleExtended(start_time, self.period)
 
         self.__data[start_time].add_trade(time, price, volume, sell)
-

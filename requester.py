@@ -1,15 +1,4 @@
-import requests
 import json
-import numpy as np
-import pandas as pd
-from datenano import datetime, HOUR
-from typing import Dict, List, Any, Union
-import statistics
-from collections import OrderedDict
-import math
-from time import sleep
-from chart import Chart
-import argparse
 import urllib3 as ul3
 import logging
 from random import randint
@@ -18,7 +7,6 @@ from typing import Dict, Union
 import time
 from abc import abstractmethod
 from scraper_api import ScraperAPIClient
-
 
 _log = logging.getLogger("proxy")
 
@@ -42,8 +30,6 @@ USER_AGENTS = [
 
 
 class Base:
-
-
 
     @abstractmethod
     def get(self, url: str, headers: Dict[str, str]):
@@ -82,7 +68,7 @@ class UrlLib(Base):
             headers = {}
 
         if "User-Agent" not in headers.keys():
-            headers["User-Agent"] = USER_AGENTS[randint(0, len(USER_AGENTS)-1)]
+            headers["User-Agent"] = USER_AGENTS[randint(0, len(USER_AGENTS) - 1)]
 
         try:
             req = self.__pool.urlopen("GET", url, headers=headers)
@@ -116,7 +102,7 @@ class ScraperApi(Base):
             headers = {}
 
         if "User-Agent" not in headers.keys():
-            headers["User-Agent"] = USER_AGENTS[randint(0, len(USER_AGENTS)-1)]
+            headers["User-Agent"] = USER_AGENTS[randint(0, len(USER_AGENTS) - 1)]
         return self.client.get(url, headers, retry=self.max_retry).text
 
     def get_json(self, url: str, headers: Union[Dict[str, str], None]):

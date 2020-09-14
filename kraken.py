@@ -1,9 +1,7 @@
-import pandas as pd
 from datenano import datetime
 from typing import Union
 from time import sleep
 from chart import Chart
-import argparse
 import logging
 import requester
 
@@ -42,7 +40,7 @@ class Client:
             return
 
         lastdt = datetime.from_ns(float(body["result"].pop("last", 0)))
-        log.info(f"Last timestamp: {int(lastdt.timestamp_nano())}")
+        log.info(f"Last date: {lastdt.isoformat()}")
 
         chart = Chart(period=period)
         if len(body["result"]) > 0:

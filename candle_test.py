@@ -1,8 +1,8 @@
 import unittest
-import math
 from candle import CandleExtended
 from datenano import datetime, MINUTE
 from datetime import timedelta
+
 
 class CandleTest(unittest.TestCase):
 

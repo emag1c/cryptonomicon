@@ -43,6 +43,10 @@ class datetime(_datetime):
     def from_pydatetime(pydatetime: _datetime) -> datetime:
         return datetime.fromtimestamp(pydatetime.timestamp())
 
+    @staticmethod
+    def from_pdtimestamp(timestamp: pd.Timestamp) -> datetime:
+        return datetime.from_pydatetime(timestamp.to_pydatetime())
+
     def __float__(self):
         return self.timestamp_nano
 

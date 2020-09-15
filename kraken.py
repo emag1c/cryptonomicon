@@ -8,6 +8,11 @@ import requester
 log = logging.getLogger("kraken")
 
 
+class KrakenAPIException(Exception):
+    pass
+
+
+
 class Client:
     trades_api_url = "https://api.kraken.com/0/public/Trades?pair={pair}&since={since}"
 
@@ -15,12 +20,14 @@ class Client:
         self.__r = req
         self.__retry_delay = retry_delay
 
-    def ohlc(self,
-             pair: str,
-             period: int,
-             start: Union[datetime, bool],
-             end: Union[datetime, bool],
-             file: str):
+    def __ohlc(self,
+               pair: str,
+               period: int,
+               start: Union[datetime, bool],
+               end: Union[datetime, bool],
+               file: str,
+               file_saved=False,
+               attempt=0):
 
         if not file:
             log.warning(f"file not set! Will only print data to stdout")
@@ -32,9 +39,14 @@ class Client:
             body = self.__r.get_json(self.trades_api_url.format(pair=pair, since=0), {})
 
         if "error" in body.keys() and len(body["error"]) > 0:
-            log.error(body["error"])
+            log.error("Kaken API error getting trade history: " + body["error"])
+            attempt += 1
             sleep(self.__retry_delay)
-            self.ohlc(pair, period, start, end, file)
+
+            if attempt > 3:
+                raise KrakenAPIException(body["error"])
+
+            self.__ohlc(pair, period, start, end, file, file_saved, attempt)
 
         if "result" not in body.keys():
             return
@@ -63,14 +75,28 @@ class Client:
                 log.info(f"Added {cnt} trades to chart")
 
             df = chart.dataframe
+
             if file:
-                df.to_csv(file, mode="a", header=False)
+                if not file_saved:
+                    df.to_csv(file, mode="w", header=True)
+                    file_saved = True
+                else:
+                    df.to_csv(file, mode="a", header=False)
             else:
                 print(df)
+
         else:
             return
 
         if end is False or lastdt < end:
-            return self.ohlc(pair, period, lastdt, end, file)
+            return self.__ohlc(pair, period, lastdt, end, file, file_saved, 0)
 
         return
+
+    def ohlc(self,
+             pair: str,
+             period: int,
+             start: Union[datetime, bool],
+             end: Union[datetime, bool],
+             file: str):
+        return self.__ohlc(pair, period, start, end, file)

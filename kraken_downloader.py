@@ -57,12 +57,6 @@ if __name__ == '__main__':
     _pair = args.pair.lower().strip()
     _file = args.file.strip()
 
-    if _file:
-        try:
-            fh = open(_file, mode="w").close()
-        except Exception as e:
-            log.fatal(f"Could not open file {_file} for writing: {e}")
-
     print(f"SETTINGS:\n"
           f"pair: {_pair}\n"
           f"period: {_period}\n"

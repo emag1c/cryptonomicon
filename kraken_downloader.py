@@ -4,7 +4,7 @@ from typing import Union
 import kraken
 import argparse
 import logging
-import requester
+from kraken import requester
 import sys
 
 log = logging.getLogger("kraken_downloader")
@@ -15,9 +15,12 @@ class RequestError(Exception):
         self.values = values
 
 
-def setup_logging():
+def setup_logging(verbose=False):
     root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
+    if verbose:
+        root.setLevel(logging.DEBUG)
+    else:
+        root.setLevel(logging.INFO)
 
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
@@ -32,6 +35,7 @@ def parse_args():
     parser.add_argument("-f", "--file", type=str, required=True, help="the file to save the file")
     parser.add_argument("-s", "--start", type=str, required=False, help="the start date")
     parser.add_argument("-e", "--end", type=str, required=False, help="the end date")
+    parser.add_argument("-v", "--verbose", action="store_true", help="turn on verbose (debug level) logging")
     parser.add_argument("--period", type=str, required=True, help="the period to use")
     parser.add_argument("--proxy-host", type=str, required=False, default=None, help="the proxy host")
     parser.add_argument("--proxy-auth", type=str, required=False, default=None, help="the proxy authorization")
@@ -43,8 +47,8 @@ def parse_args():
 
 
 if __name__ == '__main__':
-    setup_logging()
     args = parse_args()
+    setup_logging(args.verbose)
     # use pandas to parse the timedelta
     _start_date = False
     _end_date = False

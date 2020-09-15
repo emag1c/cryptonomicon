@@ -1,6 +1,6 @@
 from typing import Dict, Union
 from collections import OrderedDict
-from candle import CandleExtended
+from chart.candle import CandleExtended
 from datenano import datetime
 import pandas as pd
 
@@ -25,7 +25,7 @@ class Chart:
         return od
 
     def add_candle(self, candle: CandleExtended):
-        self.__data[candle.Time] = candle.ordered_dict
+        self.__data[candle.Time] = candle
 
     def add_trade(self, time: Union[int, datetime], price: float, volume, sell=False):
         # round the time

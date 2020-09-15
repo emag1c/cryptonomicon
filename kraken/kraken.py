@@ -3,7 +3,7 @@ from typing import Union
 from time import sleep
 from chart import Chart
 import logging
-import requester
+from kraken import requester
 
 log = logging.getLogger("kraken")
 

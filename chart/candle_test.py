@@ -1,5 +1,5 @@
 import unittest
-from candle import CandleExtended
+from chart.candle import CandleExtended
 from datenano import datetime, MINUTE
 from datetime import timedelta
 

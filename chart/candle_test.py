@@ -1,5 +1,5 @@
 import unittest
-from chart.candle import CandleExtended
+from .candle import CandleExtended, time_as_nano
 from datenano import datetime, MINUTE
 from datetime import timedelta
 
@@ -17,7 +17,7 @@ class CandleTest(unittest.TestCase):
         volume1 = 2
 
         self.candle.add_trade(time1, price1, volume1, False)
-        self.assertEqual(self.candle.lastTime, CandleExtended.time_nano(time1))
+        self.assertEqual(self.candle.lastTime, time_as_nano(time1))
         self.assertEqual(self.candle.Open, price1)
         self.assertEqual(self.candle.Close, price1)
         self.assertEqual(self.candle.High, price1)
@@ -32,7 +32,7 @@ class CandleTest(unittest.TestCase):
         volume2 = 2
 
         self.candle.add_trade(time2, price2, volume2, True)
-        self.assertEqual(self.candle.lastTime, CandleExtended.time_nano(time2))
+        self.assertEqual(self.candle.lastTime, time_as_nano(time2))
         self.assertEqual(self.candle.Open, price1)
         self.assertEqual(self.candle.Close, price2)
         self.assertEqual(self.candle.High, price2)
@@ -47,7 +47,7 @@ class CandleTest(unittest.TestCase):
         volume3 = 3
 
         self.candle.add_trade(time3, price3, volume3, True)
-        self.assertEqual(self.candle.lastTime, CandleExtended.time_nano(time3))
+        self.assertEqual(self.candle.lastTime, time_as_nano(time3))
         self.assertEqual(self.candle.Open, price1)
         self.assertEqual(self.candle.Close, price3)
         self.assertEqual(self.candle.High, price2)

@@ -3,6 +3,7 @@ from collections import OrderedDict
 from chart.candle import CandleExtended
 from datenano import datetime
 import pandas as pd
+import numpy as np
 
 
 class Chart:
@@ -15,7 +16,7 @@ class Chart:
 
     @property
     def dataframe(self):
-        return pd.DataFrame(self.ordered_dict.values())
+        return pd.DataFrame(self.ordered_dict.values(), dtype=np.float64)
 
     @property
     def ordered_dict(self) -> OrderedDict:

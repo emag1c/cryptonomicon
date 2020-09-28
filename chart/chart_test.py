@@ -1,7 +1,7 @@
 import unittest
 from datenano import datetime, MINUTE
 from datetime import timedelta
-from chart import Chart
+from . import Chart
 
 
 class ChartTest(unittest.TestCase):
@@ -36,6 +36,10 @@ class ChartTest(unittest.TestCase):
         self.chart.add_trade(time4, price4, volume4, True)
 
         df = self.chart.dataframe
+
+        print(df.dtypes)
+
+        print(df.head)
 
         self.assertEqual(df.iloc[0]["Volume"], volume1 + volume2 + volume3)
         self.assertEqual(df.iloc[0]["Open"], price1)

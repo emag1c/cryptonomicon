@@ -26,6 +26,7 @@ class Chart:
         return od
 
     def add_candle(self, candle: CandleExtended):
+        assert(candle.period == self.period), "periods must match"
         self.__data[candle.Time] = candle
 
     def add_trade(self, time: Union[int, datetime], price: float, volume, sell=False):

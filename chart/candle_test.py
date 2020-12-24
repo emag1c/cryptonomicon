@@ -17,29 +17,29 @@ class CandleTest(unittest.TestCase):
         volume1 = 2
 
         self.candle.add_trade(time1, price1, volume1, False)
-        self.assertEqual(self.candle.lastTime, time_as_nano(time1))
-        self.assertEqual(self.candle.Open, price1)
-        self.assertEqual(self.candle.Close, price1)
-        self.assertEqual(self.candle.High, price1)
-        self.assertEqual(self.candle.Low, price1)
-        self.assertEqual(self.candle.Volume, volume1)
-        self.assertEqual(self.candle.TradeMedian, price1 * volume1)
-        self.assertEqual(self.candle.TradeAverage, price1 * volume1)
-        self.assertEqual(self.candle.TradeCount, 1)
+        self.assertEqual(self.candle.last_time, time_as_nano(time1))
+        self.assertEqual(self.candle.open, price1)
+        self.assertEqual(self.candle.close, price1)
+        self.assertEqual(self.candle.high, price1)
+        self.assertEqual(self.candle.low, price1)
+        self.assertEqual(self.candle.volume, volume1)
+        self.assertEqual(self.candle.trade_med, price1 * volume1)
+        self.assertEqual(self.candle.trade_avg, price1 * volume1)
+        self.assertEqual(self.candle.trade_cnt, 1)
 
         time2 = self.now + timedelta(seconds=20)
         price2 = 3
         volume2 = 2
 
         self.candle.add_trade(time2, price2, volume2, True)
-        self.assertEqual(self.candle.lastTime, time_as_nano(time2))
-        self.assertEqual(self.candle.Open, price1)
-        self.assertEqual(self.candle.Close, price2)
-        self.assertEqual(self.candle.High, price2)
-        self.assertEqual(self.candle.Low, price1)
-        self.assertEqual(self.candle.Volume, volume2 + volume1)
-        self.assertEqual(self.candle.TradeAverage, ((price1 * volume1) + (price2 * volume2)) / 2)
-        self.assertEqual(self.candle.TradeCount, 2)
+        self.assertEqual(self.candle.last_time, time_as_nano(time2))
+        self.assertEqual(self.candle.open, price1)
+        self.assertEqual(self.candle.close, price2)
+        self.assertEqual(self.candle.high, price2)
+        self.assertEqual(self.candle.low, price1)
+        self.assertEqual(self.candle.volume, volume2 + volume1)
+        self.assertEqual(self.candle.trade_avg, ((price1 * volume1) + (price2 * volume2)) / 2)
+        self.assertEqual(self.candle.trade_cnt, 2)
 
 
         time3 = self.now + timedelta(seconds=30)
@@ -47,13 +47,13 @@ class CandleTest(unittest.TestCase):
         volume3 = 3
 
         self.candle.add_trade(time3, price3, volume3, True)
-        self.assertEqual(self.candle.lastTime, time_as_nano(time3))
-        self.assertEqual(self.candle.Open, price1)
-        self.assertEqual(self.candle.Close, price3)
-        self.assertEqual(self.candle.High, price2)
-        self.assertEqual(self.candle.Low, price1)
-        self.assertEqual(self.candle.Volume, volume2 + volume1 + volume3)
-        self.assertEqual(self.candle.TradeCount, 3)
+        self.assertEqual(self.candle.last_time, time_as_nano(time3))
+        self.assertEqual(self.candle.open, price1)
+        self.assertEqual(self.candle.close, price3)
+        self.assertEqual(self.candle.high, price2)
+        self.assertEqual(self.candle.low, price1)
+        self.assertEqual(self.candle.volume, volume2 + volume1 + volume3)
+        self.assertEqual(self.candle.trade_cnt, 3)
 
 
 if __name__ == '__main__':

@@ -9,82 +9,82 @@ class CandleExtended:
 
         self.Time = time_as_nano(time)
 
-        self.Period = period
-        self.Open = np.float(0)
-        self.High = np.float(0)
-        self.Low = np.float(0)
-        self.Close = np.float(0)
-        self.PriceAverage = np.float(0)
-        self.TradeAverage = np.float(0)
-        self.SellAverage = np.float(0)
-        self.BuyAverage = np.float(0)
-        self.TradeMedian = np.float(0)
-        self.Volume = np.float(0)
-        self.TradeCount = np.float(0)
+        self.period = period
+        self.open = np.float(0)
+        self.high = np.float(0)
+        self.low = np.float(0)
+        self.close = np.float(0)
+        self.price_avg = np.float(0)
+        self.trade_avg = np.float(0)
+        self.sell_avg = np.float(0)
+        self.buy_avg = np.float(0)
+        self.trade_med = np.float(0)
+        self.volume = np.float(0)
+        self.trade_cnt = np.float(0)
 
-        self.lastTime = self.Time
+        self.last_time = self.Time
         self.totals = []
         self.buy_totals = []
         self.sell_totals = []
         self.amounts = []
         self.prices = []
-        self.endTime = self.Time + period - 1
+        self.end_time = self.Time + period - 1
 
     def add_trade(self, time, price: float, volume: float, sell=False):
 
         time = time_as_nano(time)
 
-        if time > self.endTime:
+        if time > self.end_time:
             return False
 
         trade_cost = price * volume
-        self.TradeCount += 1
+        self.trade_cnt += 1
         self.prices.append(price)
         self.amounts.append(volume)
         self.amounts.sort()
         self.totals.append(trade_cost)
         self.totals.sort()
 
-        if self.Open == 0 or time < self.lastTime:
-            self.Open = price
-        if self.Close == 0 or time > self.lastTime:
-            self.Close = price
-        if self.High == 0 or price > self.High:
-            self.High = price
-        if self.Low == 0 or price < self.Low:
-            self.Low = price
+        if self.open == 0 or time < self.last_time:
+            self.open = price
+        if self.close == 0 or time > self.last_time:
+            self.close = price
+        if self.high == 0 or price > self.high:
+            self.high = price
+        if self.low == 0 or price < self.low:
+            self.low = price
 
-        self.Volume += volume
+        self.volume += volume
         if sell:
             self.sell_totals.append(trade_cost)
-            self.SellAverage = statistics.fmean(self.sell_totals)
+            self.sell_avg = statistics.fmean(self.sell_totals)
         else:
             self.buy_totals.append(trade_cost)
-            self.BuyAverage = statistics.fmean(self.buy_totals)
+            self.buy_avg = statistics.fmean(self.buy_totals)
 
         # calc totals
-        self.TradeMedian = statistics.median(self.totals)
-        self.TradeAverage = statistics.fmean(self.totals)
-        self.PriceAverage = statistics.fmean(self.prices)
-        self.lastTime = time
+        self.trade_med = statistics.median(self.totals)
+        self.trade_avg = statistics.fmean(self.totals)
+        self.price_avg = statistics.fmean(self.prices)
+        self.last_time = time
 
     def time_in_candle(self, time: int) -> bool:
-        return self.Time <= time <= self.endTime
+        return self.Time <= time <= self.end_time
 
     @property
     def ordered_dict(self) -> OrderedDict:
         return OrderedDict([
             ("Time", self.Time),
-            ("Period", self.Period),
-            ("Open", self.Open),
-            ("High", self.High),
-            ("Low", self.Low),
-            ("Close", self.Close),
-            ("PriceAverage", self.PriceAverage),
-            ("TradeAverage", self.TradeAverage),
-            ("SellAverage", self.SellAverage),
-            ("BuyAverage", self.BuyAverage),
-            ("TradeMedian", self.TradeMedian),
-            ("Volume", self.Volume),
-            ("TradeCount", self.TradeCount),
+            ("Period", self.period),
+            ("Open", self.open),
+            ("High", self.high),
+            ("Low", self.low),
+            ("Close", self.close),
+            ("PriceAverage", self.price_avg),
+            ("TradeAverage", self.trade_avg),
+            ("SellAverage", self.sell_avg),
+            ("BuyAverage", self.buy_avg),
+            ("TradeMedian", self.trade_med),
+            ("Volume", self.volume),
+            ("TradeCount", self.trade_cnt),
         ])

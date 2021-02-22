@@ -145,11 +145,18 @@ class Set:
     Represents a set of indicators that will accept the same exec input args
     """
 
-    def __init__(self, indicators: List[Indicator], name=None):
+    def __init__(self, indicators: List[Indicator], name=None, append=None, prepend=None):
         assert len(indicators) > 0
-        if name is not None:
+
+        if name is not None or append is not None or prepend is not None:
             for i in indicators:
-                i.name = name
+                if name is not None:
+                    i.name = name
+                if append is not None:
+                    i.name = i.name + append
+                if prepend is not None:
+                    i.name = prepend + i.name
+
         self.indicators = indicators
 
     def to_frame(self, *args, **kwargs) -> pd.DataFrame:
@@ -183,6 +190,12 @@ class Set:
 
     def __call__(self, *args, **kwargs):
         return self._exec(*args, **kwargs)
+
+    def output_names(self) -> List[str]:
+        output_names = []
+        for i in self.indicators:
+            output_names.extend(i.output_names)
+        return output_names
 
 
 def mid(a: np.array, b: np.array) -> np.array:

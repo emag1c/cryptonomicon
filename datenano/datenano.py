@@ -19,7 +19,11 @@ def time_as_nano(time) -> float:
     elif isinstance(time, _datetime):
         return time.timestamp() * SECOND
     elif isinstance(time, float):
-        return time * SECOND
+        if time > 1e17:
+            # already nano second
+            return time
+        else:
+            return time * SECOND
     else:
         return time
 

@@ -42,7 +42,7 @@ class Base:
 
 class UrlLib(Base):
     def __init__(self,
-                 proxy_host: str,
+                 proxy_host: Union[None, str] = None,
                  proxy_proto: str = "http",
                  proxy_auth: str = "",
                  max_attempts: int = 10,
@@ -72,7 +72,8 @@ class UrlLib(Base):
 
         try:
             req = self.__pool.urlopen("GET", url, headers=headers)
-            return req.urlopen(req).read()
+            return req.data
+            # return req.urlopen(req).read()
         except HTTPError as e:
             attempt += 1
             if attempt > self.__max_attempts:

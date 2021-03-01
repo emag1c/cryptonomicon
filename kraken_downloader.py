@@ -75,10 +75,12 @@ if __name__ == '__main__':
     req: Union[None, requester.Base] = None
     if args.scraperapi_key:
         req = requester.ScraperApi(key=args.scraperapi_key.strip(), max_retry=3)
-    else:
+    elif args.proxy_host is not None:
         req = requester.UrlLib(proxy_auth=args.proxy_auth.strip(),
                                proxy_host=args.proxy_host.strip(),
                                proxy_proto=args.proxy_proto.strip())
+    else:
+        req = requester.UrlLib()
 
     getter = kraken.Client(req=req, retry_delay=1)
     getter.ohlc(pair=_pair, period=_period, start=_start_date, end=_end_date, file=_file)
